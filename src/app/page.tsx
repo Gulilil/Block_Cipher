@@ -1,17 +1,29 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { decrypt, encrypt } from "./algo/process";
 
 export default function Home() {
   const [type, setType] = useState("Text");
   const [inputBuffer, setInputBuffer] = useState<string>("");
   const [fileName, setFileName] = useState<string>("");
   const [fileBuffer, setFileBuffer] = useState<File | null>(null);
-  const [modeBuffer, setModeBuffer] = useState<string>("");
+  const [modeBuffer, setModeBuffer] = useState<string>("ECB");
   const [resultBuffer, setResultBuffer] = useState<string>("");
+  const [keyBuffer, setKeyBuffer] = useState<string>("");
 
   const switchResultToInput = () => {
     setInputBuffer(resultBuffer);
+  };
+
+  const processEncrypt = () => {
+    var cipherText = encrypt(inputBuffer, keyBuffer, modeBuffer);
+    setResultBuffer(cipherText);
+  };
+
+  const processDecrypt = () => {
+    var plainText = decrypt(inputBuffer, keyBuffer, modeBuffer);
+    setResultBuffer(plainText);
   };
 
   useEffect(() => {
@@ -35,17 +47,17 @@ export default function Home() {
       <div className="flex w-full h-full absolute top-0 left-0 bg-[url('./assets/bg.jpg')] z-[-1]" />
 
       {/* All Container */}
-      <div className="flex min-w-90% min-h-screen flex-col justify-start items-center gap-10 py-10 px-20 bg-[#fafafa]">
+      <div className="flex w-[90%] min-h-screen flex-col justify-start items-center gap-10 py-10 px-20 bg-[#fafafa]">
         {/* Title Container */}
         <div className="flex flex-col justify-center items-center gap-5">
           {/* Title */}
-          <Image src="/logo.png" width={100} height={100} alt="Logo Picture" />
+          <Image src="/logo.png" width={80} height={80} alt="Logo Picture" />
           {/* Title */}
-          <div className="font-bold text-3xl">Block Cipher</div>
+          <div className="font-bold text-2xl">Block Cipher</div>
         </div>
 
         {/* Content Container */}
-        <div className="flex lg:flex-row flex-col justify-center items-center gap-20">
+        <div className="flex lg:flex-row flex-col justify-center items-center gap-10">
           {/* Input Container */}
           <div className="flex flex-col justify-center items-start gap-4">
             <div className="flex flex-row justify-between w-full gap-10">
@@ -64,10 +76,11 @@ export default function Home() {
               </button>
             </div>
 
+            {/* Input Text */}
             {type == "Text" ? (
               <textarea
                 onChange={(e) => setInputBuffer(e.target.value)}
-                className="bg-[#efefef] border-2 border-black min-w-[400px] min-h-[300px] p-[20px] shadow-xl"
+                className="bg-[#efefef] border-2 border-black lg:w-[350px] w-[60vw] min-h-[200px] p-[20px] shadow-xl"
                 id="input"
                 name="input"
                 placeholder="Insert your input here ..."
@@ -86,6 +99,17 @@ export default function Home() {
                 />
               </div>
             )}
+
+            {/* Key Input */}
+            <label className="font-bold text-left text-xl"> Key </label>
+            <textarea
+              onChange={(e) => setKeyBuffer(e.target.value)}
+              className="bg-[#efefef] border-2 border-black lg:w-[350px] w-[60vw] min-h-[50px] p-[20px] shadow-xl"
+              id="input"
+              name="input"
+              placeholder="Insert your key here ..."
+              value={keyBuffer}
+            />
           </div>
 
           {/* Process Container */}
@@ -110,11 +134,17 @@ export default function Home() {
 
             {/* Buttons */}
             <div className="flex flex-row gap-5">
-              <button className="text-[#c5b846] border-2 border-[#c5b846] font-bold py-2 px-4 rounded-xl hover:bg-[#c5b846] hover:text-white">
+              <button
+                className="text-[#c5b846] border-2 border-[#c5b846] font-bold py-2 px-4 rounded-xl hover:bg-[#c5b846] hover:text-white"
+                onClick={() => processEncrypt()}
+              >
                 {" "}
                 Encrypt{" "}
               </button>
-              <button className="text-[#3290cf] border-2 border-[#3290cf] font-bold py-2 px-4 rounded-xl hover:bg-[#3290cf] hover:text-white">
+              <button
+                className="text-[#3290cf] border-2 border-[#3290cf] font-bold py-2 px-4 rounded-xl hover:bg-[#3290cf] hover:text-white"
+                onClick={() => processDecrypt()}
+              >
                 {" "}
                 Decrypt{" "}
               </button>
@@ -136,7 +166,7 @@ export default function Home() {
             <label className="font-bold text-left text-xl"> Result Text </label>
             <textarea
               readOnly
-              className="bg-[#efefef] border-2 border-black min-w-[400px] min-h-[300px] p-[20px] shadow-xl"
+              className="bg-[#efefef] border-2 border-black lg:w-[350px] w-[60vw] min-h-[350px] p-[20px] shadow-xl"
               id="input"
               name="input"
               value={resultBuffer}
