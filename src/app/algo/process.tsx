@@ -1,18 +1,15 @@
 import { encryptCBC, decryptCBC } from "./cbc";
 import { encryptCFB, decryptCFB } from "./cfb";
+import { BLOCK_SIZE, BYTE_SIZE, KEY_BLOCK_SIZE } from "../../utils/constant";
 import { decryptCounter, encryptCounter } from "./counter";
 import { encryptECB, decryptECB } from "./ecb";
 import { encryptOFB, decryptOFB } from "./ofb";
 
-const BLOCK_SIZE = 16; //128 bits = 16 bytes
-// const BLOCK_SIZE = 32; //256 bits = 32 bytes
-const BYTE_SIZE = 8; // 1 byte = 8 bit
-const IRETATION = 16;
-
-const makeStringToBlocksArray = (text: string) => {
+const makeStringToBlocksArray = (text: string, isKey: boolean) => {
+  var increment = isKey ? KEY_BLOCK_SIZE : BLOCK_SIZE;
   var blocks = [];
-  for (let i = 0; i < text.length; i += BLOCK_SIZE) {
-    const block = text.slice(i, i + BLOCK_SIZE);
+  for (let i = 0; i < text.length; i += increment) {
+    const block = text.slice(i, i + increment);
     const binaryBlock = block
       .split("")
       .map((char) => char.charCodeAt(0).toString(2).padStart(BYTE_SIZE, "0"))
@@ -35,28 +32,37 @@ const makeBlocksArrayToString = (blocks: Array<String>) => {
   return string;
 };
 
+const adjustKey = (key: string) => {
+  if (key.length == KEY_BLOCK_SIZE) {
+    return key;
+  } else if (key.length < KEY_BLOCK_SIZE) {
+    return key.padEnd(KEY_BLOCK_SIZE, "0");
+  } else {
+    return key.slice(0, KEY_BLOCK_SIZE);
+  }
+};
+
 export const encrypt = (text: string, key: string, mode: string) => {
-  var textBlocks = makeStringToBlocksArray(text);
-  textBlocks.forEach((block) => {
-    console.log(block);
-  });
-  var keyBlocks = makeStringToBlocksArray(key);
+  var textBlocks = makeStringToBlocksArray(text, false);
+  key = adjustKey(key);
+  // Since key will only be 1 block, only use the first element
+  var keyBlock = makeStringToBlocksArray(key, true)[0];
 
   switch (mode) {
     case "ECB":
-      textBlocks = encryptECB(textBlocks, key);
+      textBlocks = encryptECB(textBlocks, keyBlock);
       break;
     case "CBC":
-      textBlocks = encryptCBC(textBlocks, key);
+      textBlocks = encryptCBC(textBlocks, keyBlock);
       break;
     case "OFB":
-      textBlocks = encryptOFB(textBlocks, key);
+      textBlocks = encryptOFB(textBlocks, keyBlock);
       break;
     case "CFB":
-      textBlocks = encryptCFB(textBlocks, key);
+      textBlocks = encryptCFB(textBlocks, keyBlock);
       break;
-    case "Counter":
-      textBlocks = encryptCounter(textBlocks, key);
+    case "CTR":
+      textBlocks = encryptCounter(textBlocks, keyBlock);
       break;
     default:
       textBlocks = [""];
@@ -69,24 +75,26 @@ export const encrypt = (text: string, key: string, mode: string) => {
 };
 
 export const decrypt = (text: string, key: string, mode: string) => {
-  var textBlocks = makeStringToBlocksArray(text);
-  var keyBlocks = makeStringToBlocksArray(key);
+  var textBlocks = makeStringToBlocksArray(text, false);
+  key = adjustKey(key);
+  // Since key will only be 1 block, only use the first element
+  var keyBlock = makeStringToBlocksArray(key, true)[0];
 
   switch (mode) {
     case "ECB":
-      textBlocks = decryptECB(textBlocks, key);
+      textBlocks = decryptECB(textBlocks, keyBlock);
       break;
     case "CBC":
-      textBlocks = decryptCBC(textBlocks, key);
+      textBlocks = decryptCBC(textBlocks, keyBlock);
       break;
     case "OFB":
-      textBlocks = decryptOFB(textBlocks, key);
+      textBlocks = decryptOFB(textBlocks, keyBlock);
       break;
     case "CFB":
-      textBlocks = decryptCFB(textBlocks, key);
+      textBlocks = decryptCFB(textBlocks, keyBlock);
       break;
-    case "Counter":
-      textBlocks = decryptCounter(textBlocks, key);
+    case "CTR":
+      textBlocks = decryptCounter(textBlocks, keyBlock);
       break;
     default:
       textBlocks = [""];

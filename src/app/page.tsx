@@ -128,7 +128,7 @@ export default function Home() {
                 <option value="CBC">CBC</option>
                 <option value="OFB">OFB</option>
                 <option value="CFB">CFB</option>
-                <option value="counter">Counter</option>
+                <option value="CTR">Counter (CTR)</option>
               </select>
             </div>
 
@@ -152,7 +152,7 @@ export default function Home() {
 
             {/* Switch Button */}
             <Image
-              className="border-2 border-black rounded-full p-3 cursor-pointer hover:bg-[#f1f1f1] shadow-xl"
+              className="border-2 border-black rounded-full p-3 cursor-pointer hover:bg-[#dadada] shadow-xl"
               src="/circular_arrow.png"
               width={60}
               height={60}
