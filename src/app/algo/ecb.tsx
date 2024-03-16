@@ -1,11 +1,11 @@
-export const encryptECB = (text: string, key: string) => {
+export const encryptECB = (arrBlocks: Array<string>, key: string) => {
   // TO DO : Encryption Algo
-  var res = "CIPHER";
+  var res = [""];
   return res;
 };
 
-export const decryptECB = (text: string, key: string) => {
+export const decryptECB = (arrBlocks: Array<string>, key: string) => {
   // TO DO : Decryption Algo
-  var res = "PLAIN";
+  var res = [""];
   return res;
 };

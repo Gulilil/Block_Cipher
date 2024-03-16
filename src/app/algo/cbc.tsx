@@ -1,12 +1,12 @@
 
-export const encryptCBC = (text: string, key: string) => {
+export const encryptCBC = (arrBlocks: Array<string>, key: string) => {
   // TO DO : Encryption Algo
-  var res = "CIPHER"
+  var res = [""]
   return res
 }
 
-export const decryptCBC = (text: string, key: string) => {
+export const decryptCBC = (arrBlocks: Array<string>, key: string) => {
   // TO DO : Decryption Algo
-  var res = "PLAIN"
+  var res = [""]
   return res
 }
