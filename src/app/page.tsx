@@ -47,7 +47,7 @@ export default function Home() {
       <div className="flex w-full h-full absolute top-0 left-0 bg-[url('./assets/bg.jpg')] z-[-1]" />
 
       {/* All Container */}
-      <div className="flex w-[90%] min-h-screen flex-col justify-start items-center gap-10 py-10 px-20 bg-[#fafafa]">
+      <div className="flex w-[90%] min-h-screen flex-col justify-start items-center gap-10 py-10 px-20 bg-[#fafafa] text-black">
         {/* Title Container */}
         <div className="flex flex-col justify-center items-center gap-5">
           {/* Title */}
