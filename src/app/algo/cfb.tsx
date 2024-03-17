@@ -1,4 +1,4 @@
-import { operatorXOR } from "@/utils/utils";
+import { generateIV, operatorXOR, splitBlock } from "@/utils/utils";
 import { d_function, e_function } from "./hehehe";
 
 export const encryptCFB = (arrBlocks: Array<string>, key: string) => {
@@ -43,7 +43,7 @@ export const decryptCFB = (arrBlocks: Array<string>, key: string) => {
   for (let i = 0; i < arrBlocks.length; i++) {
     var currentBlock = arrBlocks[i];
     var decryptedBlock = d_function(iv, key);
-    console.log(decryptedBlock.length)
+
     var subDecryptedBlock = splitBlock(r, decryptedBlock);
     var subBlock = splitBlock(r, currentBlock);
     let temp = "";
@@ -59,19 +59,4 @@ export const decryptCFB = (arrBlocks: Array<string>, key: string) => {
   return res;
 };
 
-const generateIV = () => {
-  let result = "";
-  for (let i = 0; i < 128; i++) {
-    result += "0";
-  }
-  return result;
-};
 
-const splitBlock = (size: number, block: string) => {
-  const result = [];
-  for (let i = 0; i < block.length; i += size) {
-    const subBlock = block.slice(i, i + size);
-    result.push(subBlock);
-  }
-  return result;
-};

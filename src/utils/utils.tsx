@@ -11,3 +11,16 @@ export const operatorXOR = (block1: string, block2: string) => {
   }
   return resBlock;
 };
+
+export const splitBlock = (size: number, block: string) => {
+  const result = [];
+  for (let i = 0; i < block.length; i += size) {
+    const subBlock = block.slice(i, i + size);
+    result.push(subBlock);
+  }
+  return result;
+};
+
+export const generateIV = () => {
+  return "0101111000100101010000110100100100100000100100010010000101001000".repeat(2);
+};
