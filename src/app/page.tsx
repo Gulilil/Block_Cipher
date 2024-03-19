@@ -13,6 +13,7 @@ export default function Home() {
   const [keyBuffer, setKeyBuffer] = useState<string>("");
 
   const switchResultToInput = () => {
+    setType("Text")
     setInputBuffer(resultBuffer);
   };
 
