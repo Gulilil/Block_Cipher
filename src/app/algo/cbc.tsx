@@ -22,7 +22,7 @@ export const encryptCBC = (arrBlocks: Array<string>, key: string) => {
     res.push(encryptedBlock);
   }
 
-  return res
+  return res;
 }
 
 export const decryptCBC = (arrBlocks: Array<string>, key: string) => {
