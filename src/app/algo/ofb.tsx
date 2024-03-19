@@ -1,15 +1,13 @@
 import { generateIV, operatorXOR, splitBlock } from "@/utils/utils";
-import { d_function, e_function } from "./hehehe";
+import { e_function } from "./jnn";
 
 export const encryptOFB = (arrBlocks: Array<string>, key: string) => {
   const r = 8;
   let iv = generateIV();
   let res: string[] = [];
-  console.log(iv.length)
   for (let i = 0; i < arrBlocks.length; i++) {
     let plainTextBlock = arrBlocks[i];
     let encryptedRegister = e_function(iv, key);
-
     const subPlainTextBlock = splitBlock(r, plainTextBlock);
     const subEncryptedBlock = splitBlock(r, encryptedRegister);
     let temp = "";
@@ -28,10 +26,9 @@ export const decryptOFB = (arrBlocks: Array<string>, key: string) => {
   const r = 8;
   let iv = generateIV();
   let res: string[] = [];
-
   for (let i = 0; i < arrBlocks.length; i++) {
     let cipherTextBlock = arrBlocks[i];
-    let decryptedRegister = d_function(iv, key);
+    let decryptedRegister = e_function(iv, key);
 
     const subCipherTextBlock = splitBlock(r, cipherTextBlock);
     const subDecryptedBlock = splitBlock(r, decryptedRegister);

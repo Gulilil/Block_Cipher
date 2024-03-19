@@ -24,3 +24,9 @@ export const splitBlock = (size: number, block: string) => {
 export const generateIV = () => {
   return "0101111000100101010000110100100100100000100100010010000101001000".repeat(2);
 };
+
+export const shiftLeft = (block : string, shift : number) =>{
+  const value = block.substring(0, shift)
+  block = block.slice(shift)
+  return block += value
+}
