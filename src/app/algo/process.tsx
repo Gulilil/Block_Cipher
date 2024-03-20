@@ -49,6 +49,7 @@ const adjustText = (text: string) => {
 };
 
 export const encrypt = (text: string, key: string, mode: string) => {
+  var startTime = performance.now()
   // console.log(text, text.length)
   text = adjustText(text);
   // console.log(text, text.length)
@@ -79,11 +80,13 @@ export const encrypt = (text: string, key: string, mode: string) => {
 
   // Convert Back the Array of Blocks to String
   var res = makeBlocksArrayToString(textBlocks);
-
+  var endTime = performance.now()
+  console.log(`Processing: ${endTime - startTime} milliseconds`)
   return res;
 };
 
 export const decrypt = (text: string, key: string, mode: string) => {
+  var startTime = performance.now()
   // console.log(text, text.length)
   text = adjustText(text);
   // console.log(text, text.length)
@@ -114,6 +117,7 @@ export const decrypt = (text: string, key: string, mode: string) => {
 
   // Convert Back the Array of Blocks to String
   var res = makeBlocksArrayToString(textBlocks);
-
+  var endTime = performance.now()
+  console.log(`Processing: ${endTime - startTime} milliseconds`)
   return res;
 };
