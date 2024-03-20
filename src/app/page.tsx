@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { decrypt, encrypt } from "./algo/process";
+import { downloadFile } from "./utils/download";
 
 export default function Home() {
   const [type, setType] = useState("Text");
@@ -13,18 +14,35 @@ export default function Home() {
   const [keyBuffer, setKeyBuffer] = useState<string>("");
 
   const switchResultToInput = () => {
-    setType("Text")
+    setType("Text");
     setInputBuffer(resultBuffer);
   };
 
   const processEncrypt = () => {
+    resetErrorMsg();
     var cipherText = encrypt(inputBuffer, keyBuffer, modeBuffer);
     setResultBuffer(cipherText);
   };
 
   const processDecrypt = () => {
+    resetErrorMsg();
     var plainText = decrypt(inputBuffer, keyBuffer, modeBuffer);
     setResultBuffer(plainText);
+  };
+
+  const resetErrorMsg = () => {
+    var error = document.getElementById("error");
+    error!.innerHTML = "";
+  };
+
+  const download = () => {
+    console.log("test");
+    if (resultBuffer.length == 0) {
+      var error = document.getElementById("error");
+      error!.innerHTML = "Result is empty.";
+    } else {
+      downloadFile(resultBuffer, fileName);
+    }
   };
 
   useEffect(() => {
@@ -119,7 +137,7 @@ export default function Home() {
             <div className="flex flex-col gap-2">
               <p> Choose the desired mode: </p>
               <select
-                className="py-2 px-6 border-2 border-[#bfbfbf] hover:bg-[#bfbfbf] focus:bg-[#bfbfbf] cursor-pointer rounded-full hover:text-[#ffffff] focus:text-[#ffffff]"
+                className="py-2 px-6 border-2 border-[#dfdfdf] hover:bg-[#dfdfdf] focus:bg-[#dfdfdf] cursor-pointer rounded-full hover:text-[#000000] focus:text-[#000000]"
                 name="mode"
                 id="mode"
                 onChange={(e) => setModeBuffer(e.target.value)}
@@ -164,7 +182,20 @@ export default function Home() {
 
           {/* Result Container */}
           <div className="flex flex-col justify-center items-start gap-4">
-            <label className="font-bold text-left text-xl"> Result Text </label>
+            <div className="flex flex-row justify-between w-full gap-10">
+              <label className="font-bold text-left text-xl">
+                {" "}
+                Result Text{" "}
+              </label>
+              <button
+                className="font-bold border-2 border-[#454545] py-2 px-4 rounded-xl hover:bg-[#454545] hover:text-white"
+                onClick={() => {
+                  download();
+                }}
+              >
+                Download
+              </button>
+            </div>
             <textarea
               readOnly
               className="bg-[#efefef] border-2 border-black lg:w-[350px] w-[60vw] min-h-[350px] p-[20px] shadow-xl"
@@ -172,6 +203,7 @@ export default function Home() {
               name="input"
               value={resultBuffer}
             />
+            <div id="error" className="text-[red] font-bold"></div>
           </div>
         </div>
       </div>
