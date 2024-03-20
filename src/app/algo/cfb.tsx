@@ -1,5 +1,5 @@
 import { generateIV, operatorXOR, splitBlock } from "@/utils/utils";
-import { d_function, e_function } from "./hehehe";
+import { e_function } from "./jnn";
 
 export const encryptCFB = (arrBlocks: Array<string>, key: string) => {
   // Size 1 block = 128 bit, size r = 8 bit, brrti ada 128/8 = 16
@@ -42,12 +42,12 @@ export const decryptCFB = (arrBlocks: Array<string>, key: string) => {
 
   for (let i = 0; i < arrBlocks.length; i++) {
     var currentBlock = arrBlocks[i];
-    var decryptedBlock = d_function(iv, key);
+    var decryptedBlock = e_function(iv, key);
 
     var subDecryptedBlock = splitBlock(r, decryptedBlock);
     var subBlock = splitBlock(r, currentBlock);
     let temp = "";
-    console.log(decryptedBlock.length, subBlock.length)
+    console.log(decryptedBlock.length, subBlock.length);
     for (let j = 0; j < subBlock.length; j++) {
       const resXOR = operatorXOR(subDecryptedBlock[j], subBlock[j]);
       iv = iv.slice(8);
@@ -58,5 +58,3 @@ export const decryptCFB = (arrBlocks: Array<string>, key: string) => {
   }
   return res;
 };
-
-

@@ -42,11 +42,24 @@ const adjustKey = (key: string) => {
   }
 };
 
+const adjustText = (text: string) => {
+  var divider = Math.ceil(text.length/BLOCK_SIZE);
+  var res = text.padEnd(divider * BLOCK_SIZE, " ")
+  return res
+}
+
 export const encrypt = (text: string, key: string, mode: string) => {
+  // console.log(text, text.length)
+  text = adjustText(text);
+  // console.log(text, text.length)
   var textBlocks = makeStringToBlocksArray(text, false);
   key = adjustKey(key);
   // Since key will only be 1 block, only use the first element
   var keyBlock = makeStringToBlocksArray(key, true)[0];
+
+  textBlocks.forEach((block) => {
+    console.log(block);
+  });
 
   switch (mode) {
     case "ECB":
@@ -75,6 +88,9 @@ export const encrypt = (text: string, key: string, mode: string) => {
 };
 
 export const decrypt = (text: string, key: string, mode: string) => {
+  // console.log(text, text.length)
+  text = adjustText(text);
+  // console.log(text, text.length)
   var textBlocks = makeStringToBlocksArray(text, false);
   key = adjustKey(key);
   // Since key will only be 1 block, only use the first element

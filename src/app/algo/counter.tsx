@@ -1,6 +1,6 @@
 import { operatorXOR } from "@/utils/utils";
 import { BLOCK_SIZE, BYTE_SIZE } from "../../utils/constant";
-import { e_function } from "./hehehe";
+import { e_function } from "./jnn";
 
 export const encryptCounter = (arrBlocks: Array<string>, key: string) => {
   // TO DO : Encryption Algo
@@ -21,7 +21,7 @@ export const encryptCounter = (arrBlocks: Array<string>, key: string) => {
     res.push(resBlock);
     count++;
   }
-  console.log("ini res : ", res)
+  console.log("ini res : ", res);
   return res;
 };
 

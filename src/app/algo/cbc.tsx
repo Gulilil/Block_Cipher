@@ -1,5 +1,5 @@
 import { generateIV, operatorXOR } from "@/utils/utils";
-import { d_function, e_function } from "./hehehe";
+import { d_function, e_function } from "./jnn";
 
 export const encryptCBC = (arrBlocks: Array<string>, key: string) => {
   var res = [];

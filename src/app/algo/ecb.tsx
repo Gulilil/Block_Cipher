@@ -1,4 +1,4 @@
-import { d_function, e_function } from "./hehehe";
+import { d_function, e_function } from "./jnn";
 
 export const encryptECB = (arrBlocks: Array<string>, key: string) => {
   var res = [];
