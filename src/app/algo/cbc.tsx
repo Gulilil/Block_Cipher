@@ -1,4 +1,4 @@
-import { generateIV, operatorXOR } from "@/utils/utils";
+import { generateIV, operatorXOR } from "@/app/utils/utils";
 import { d_function, e_function } from "./jnn";
 
 export const encryptCBC = (arrBlocks: Array<string>, key: string) => {
@@ -14,7 +14,7 @@ export const encryptCBC = (arrBlocks: Array<string>, key: string) => {
   temp = firstEncryptedBlock;
   res.push(firstEncryptedBlock);
 
-  for(let i = 1; i < arrBlocks.length; i++) {
+  for (let i = 1; i < arrBlocks.length; i++) {
     var currentBlock = arrBlocks[i];
     var xorBlock = operatorXOR(currentBlock, temp);
     var encryptedBlock = e_function(xorBlock, key);
@@ -23,7 +23,7 @@ export const encryptCBC = (arrBlocks: Array<string>, key: string) => {
   }
 
   return res;
-}
+};
 
 export const decryptCBC = (arrBlocks: Array<string>, key: string) => {
   var res = [];
@@ -35,7 +35,7 @@ export const decryptCBC = (arrBlocks: Array<string>, key: string) => {
   res.push(decryptedBlock);
   var lastBlock = firstBlock;
 
-  for(let i = 1; i < arrBlocks.length; i++) {
+  for (let i = 1; i < arrBlocks.length; i++) {
     var currentBlock = arrBlocks[i];
     var decryptedBlock = d_function(currentBlock, key);
     decryptedBlock = operatorXOR(decryptedBlock, lastBlock);
@@ -44,4 +44,4 @@ export const decryptCBC = (arrBlocks: Array<string>, key: string) => {
   }
 
   return res;
-}
+};

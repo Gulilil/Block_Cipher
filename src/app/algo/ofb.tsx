@@ -1,4 +1,4 @@
-import { generateIV, operatorXOR, splitBlock } from "@/utils/utils";
+import { generateIV, operatorXOR, splitBlock } from "@/app/utils/utils";
 import { e_function } from "./jnn";
 
 export const encryptOFB = (arrBlocks: Array<string>, key: string) => {

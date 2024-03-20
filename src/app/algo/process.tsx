@@ -1,6 +1,6 @@
 import { encryptCBC, decryptCBC } from "./cbc";
 import { encryptCFB, decryptCFB } from "./cfb";
-import { BLOCK_SIZE, BYTE_SIZE, KEY_BLOCK_SIZE } from "../../utils/constant";
+import { BLOCK_SIZE, BYTE_SIZE, KEY_BLOCK_SIZE } from "../utils/constant";
 import { decryptCounter, encryptCounter } from "./counter";
 import { encryptECB, decryptECB } from "./ecb";
 import { encryptOFB, decryptOFB } from "./ofb";
@@ -43,10 +43,10 @@ const adjustKey = (key: string) => {
 };
 
 const adjustText = (text: string) => {
-  var divider = Math.ceil(text.length/BLOCK_SIZE);
-  var res = text.padEnd(divider * BLOCK_SIZE, " ")
-  return res
-}
+  var divider = Math.ceil(text.length / BLOCK_SIZE);
+  var res = text.padEnd(divider * BLOCK_SIZE, " ");
+  return res;
+};
 
 export const encrypt = (text: string, key: string, mode: string) => {
   // console.log(text, text.length)

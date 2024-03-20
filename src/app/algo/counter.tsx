@@ -1,5 +1,5 @@
-import { operatorXOR } from "@/utils/utils";
-import { BLOCK_SIZE, BYTE_SIZE } from "../../utils/constant";
+import { operatorXOR } from "@/app/utils/utils";
+import { BLOCK_SIZE, BYTE_SIZE } from "../utils/constant";
 import { e_function } from "./jnn";
 
 export const encryptCounter = (arrBlocks: Array<string>, key: string) => {
@@ -13,10 +13,6 @@ export const encryptCounter = (arrBlocks: Array<string>, key: string) => {
 
     var temp = e_function(countBinary, key);
 
-    // Adjustment
-    if (block.length < temp.length) {
-      temp = temp.slice(0, block.length);
-    }
     var resBlock = operatorXOR(temp, block);
     res.push(resBlock);
     count++;
@@ -35,10 +31,6 @@ export const decryptCounter = (arrBlocks: Array<string>, key: string) => {
 
     var temp = e_function(countBinary, key);
 
-    // Adjustment
-    if (block.length < temp.length) {
-      temp = temp.slice(0, block.length);
-    }
     var resBlock = operatorXOR(temp, block);
     res.push(resBlock);
     count++;
