@@ -29,7 +29,7 @@ export const decryptCBC = (arrBlocks: Array<string>, key: string) => {
   var res = [];
   let iv = generateIV();
 
-  var firstBlock = arrBlocks[0]
+  var firstBlock = arrBlocks[0];
   var decryptedBlock = d_function(firstBlock, key);
   decryptedBlock = operatorXOR(decryptedBlock, iv);
   res.push(decryptedBlock);
