@@ -6,7 +6,6 @@ export const operatorXOR = (block1: string, block2: string) => {
     var charBinary2 = parseInt(block2[i]);
 
     var resChar = charBinary1 ^ charBinary2;
-    // console.log(charBinary1, charBinary2, resChar);
     resBlock += resChar;
   }
   return resBlock;

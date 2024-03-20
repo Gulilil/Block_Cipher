@@ -1,5 +1,4 @@
-// Original Algorithm
-
+import { S_BOX } from "@/utils/constant";
 import { operatorXOR, shiftLeft, splitBlock } from "@/utils/utils";
 const ROUND = 16;
 export const e_function = (input: string, key: string) => {
@@ -16,7 +15,8 @@ export const e_function = (input: string, key: string) => {
         internalKeys[i].length
       );
     }
-    let result = operatorXOR(internalKey, prevRightSide);
+    let substitutedPlainText = substitutePlainText(shiftLeft(prevRightSide, 3));
+    let result = operatorXOR(internalKey, substitutedPlainText);
     leftSide = prevRightSide;
     rightSide = operatorXOR(result, prevLeftSide);
   }
@@ -37,8 +37,10 @@ export const d_function = (input: string, key: string) => {
         internalKeys[i].length
       );
     }
-
-    let result = operatorXOR(internalKey, prevLeftSide);
+    let substitutedPlainText = substituteCipherText(
+      rightShift(prevRightSide, 3)
+    );
+    let result = operatorXOR(internalKey, substitutedPlainText);
     rightSide = prevLeftSide;
     leftSide = operatorXOR(result, prevRightSide);
   }
@@ -56,6 +58,13 @@ const permutateMatrix = (permutateMatrix: number[], key: string) => {
 const leftShift = (key: string, shift: number) => {
   let newKey = key.slice(shift);
   return (newKey += key.substring(0, shift));
+};
+
+const rightShift = (key: string, shift: number) => {
+  const length = key.length;
+  shift = shift % length;
+  let newKey = key.slice(-shift);
+  return (newKey += key.substring(0, length - shift));
 };
 
 const generateInternalKey = (externalKey: string, round: number): string[] => {
@@ -82,4 +91,28 @@ const generatePermutateMatrix = () => {
     }
   }
   return numbers;
+};
+
+const substitutePlainText = (input: string) => {
+  let result = "";
+  let smallerBlocks = splitBlock(8, input);
+  for (let i = 0; i < smallerBlocks.length; i++) {
+    let currentBlock = smallerBlocks[i];
+    const index = parseInt(currentBlock, 2);
+    result += S_BOX[index].toString(2).padStart(8, "0");
+  }
+  return result;
+};
+
+const substituteCipherText = (input: string) => {
+  let result = "";
+  let smallerBlocks = splitBlock(8, input);
+  for (let i = 0; i < smallerBlocks.length; i++) {
+    let currentBlock = smallerBlocks[i];
+    const value = parseInt(currentBlock, 2);
+    let index = S_BOX.indexOf(value);
+    const binaryIndex = index.toString(2).padStart(8, "0");
+    result += binaryIndex;
+  }
+  return result;
 };

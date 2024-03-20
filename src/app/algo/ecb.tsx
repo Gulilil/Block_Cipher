@@ -7,8 +7,7 @@ export const encryptECB = (arrBlocks: Array<string>, key: string) => {
     var currentBlock = arrBlocks[i];
     var encryptedBlock = e_function(currentBlock, key);
     res.push(encryptedBlock);
-  }
-
+  } 
   return res;
 };
 
