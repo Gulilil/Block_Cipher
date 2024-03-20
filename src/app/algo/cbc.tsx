@@ -29,10 +29,17 @@ export const decryptCBC = (arrBlocks: Array<string>, key: string) => {
   var res = [];
   let iv = generateIV();
 
-  for(let i = 0; i < arrBlocks.length; i++) {
+  var firstBlock = arrBlocks[0]
+  var decryptedBlock = d_function(firstBlock, key);
+  decryptedBlock = operatorXOR(decryptedBlock, iv);
+  res.push(decryptedBlock);
+  var lastBlock = firstBlock;
+
+  for(let i = 1; i < arrBlocks.length; i++) {
     var currentBlock = arrBlocks[i];
     var decryptedBlock = d_function(currentBlock, key);
-    decryptedBlock = operatorXOR(decryptedBlock, iv);
+    decryptedBlock = operatorXOR(decryptedBlock, lastBlock);
+    var lastBlock = currentBlock;
     res.push(decryptedBlock);
   }
 
