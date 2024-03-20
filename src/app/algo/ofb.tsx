@@ -1,13 +1,14 @@
 import { generateIV, operatorXOR, splitBlock } from "@/utils/utils";
-import { e_function } from "./jnn";
+import { JNN } from "./jnn";
 
 export const encryptOFB = (arrBlocks: Array<string>, key: string) => {
   const r = 8;
   let iv = generateIV();
   let res: string[] = [];
+  const jnn = new JNN()
   for (let i = 0; i < arrBlocks.length; i++) {
     let plainTextBlock = arrBlocks[i];
-    let encryptedRegister = e_function(iv, key);
+    let encryptedRegister = jnn.encrypt(iv, key);
     const subPlainTextBlock = splitBlock(r, plainTextBlock);
     const subEncryptedBlock = splitBlock(r, encryptedRegister);
     let temp = "";
@@ -26,9 +27,11 @@ export const decryptOFB = (arrBlocks: Array<string>, key: string) => {
   const r = 8;
   let iv = generateIV();
   let res: string[] = [];
+  const jnn = new JNN()
+
   for (let i = 0; i < arrBlocks.length; i++) {
     let cipherTextBlock = arrBlocks[i];
-    let decryptedRegister = e_function(iv, key);
+    let decryptedRegister = jnn.encrypt(iv, key);
 
     const subCipherTextBlock = splitBlock(r, cipherTextBlock);
     const subDecryptedBlock = splitBlock(r, decryptedRegister);

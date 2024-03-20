@@ -1,18 +1,18 @@
 import { generateIV, operatorXOR, splitBlock } from "@/utils/utils";
-import { e_function } from "./jnn";
+import { JNN } from "./jnn";
 
 export const encryptCFB = (arrBlocks: Array<string>, key: string) => {
   // Size 1 block = 128 bit, size r = 8 bit, brrti ada 128/8 = 16
+  const jnn = new JNN()
   const r = 8;
   var res = [];
   let iv = generateIV();
-  console.log(arrBlocks.length);
   // Iterasi seluruh block yang ada
   for (let i = 0; i < arrBlocks.length; i++) {
     var currentBlock = arrBlocks[i];
 
     // Encrypt sebuah block
-    var encryptedRegister = e_function(iv, key);
+    var encryptedRegister = jnn.encrypt(iv, key);
 
     // Bagi encryptedBlock dan plainBlock ke dalam beberapa array dengan r bits (sizenya pasti sama)
     const subEncryptedBlock = splitBlock(r, encryptedRegister);
@@ -20,7 +20,6 @@ export const encryptCFB = (arrBlocks: Array<string>, key: string) => {
 
     // XOR sebuah encryptedBlock dengan sebuah plainBlock ini
     let temp = "";
-    console.log(subEncryptedBlock.length, subPlainBlock.length);
     for (let j = 0; j < subPlainBlock.length; j++) {
       const resXOR = operatorXOR(subEncryptedBlock[j], subPlainBlock[j]);
       // Hapus 8 bit pertama dari iv(ikutin size 5)
@@ -39,15 +38,14 @@ export const decryptCFB = (arrBlocks: Array<string>, key: string) => {
   var res = [];
   const r = 8;
   let iv = generateIV();
-
+  const jnn = new JNN()
   for (let i = 0; i < arrBlocks.length; i++) {
     var currentBlock = arrBlocks[i];
-    var decryptedBlock = e_function(iv, key);
+    var decryptedBlock = jnn.encrypt(iv, key);
 
     var subDecryptedBlock = splitBlock(r, decryptedBlock);
     var subBlock = splitBlock(r, currentBlock);
     let temp = "";
-    console.log(decryptedBlock.length, subBlock.length);
     for (let j = 0; j < subBlock.length; j++) {
       const resXOR = operatorXOR(subDecryptedBlock[j], subBlock[j]);
       iv = iv.slice(8);
