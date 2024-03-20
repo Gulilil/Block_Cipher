@@ -6,7 +6,7 @@ export const encryptCFB = (arrBlocks: Array<string>, key: string) => {
   const r = 8;
   var res = [];
   let iv = generateIV();
-  console.log(arrBlocks.length);
+  // console.log(arrBlocks.length);
   // Iterasi seluruh block yang ada
   for (let i = 0; i < arrBlocks.length; i++) {
     var currentBlock = arrBlocks[i];
@@ -20,7 +20,7 @@ export const encryptCFB = (arrBlocks: Array<string>, key: string) => {
 
     // XOR sebuah encryptedBlock dengan sebuah plainBlock ini
     let temp = "";
-    console.log(subEncryptedBlock.length, subPlainBlock.length);
+    // console.log(subEncryptedBlock.length, subPlainBlock.length);
     for (let j = 0; j < subPlainBlock.length; j++) {
       const resXOR = operatorXOR(subEncryptedBlock[j], subPlainBlock[j]);
       // Hapus 8 bit pertama dari iv(ikutin size 5)
@@ -47,7 +47,7 @@ export const decryptCFB = (arrBlocks: Array<string>, key: string) => {
     var subDecryptedBlock = splitBlock(r, decryptedBlock);
     var subBlock = splitBlock(r, currentBlock);
     let temp = "";
-    console.log(decryptedBlock.length, subBlock.length);
+    // console.log(decryptedBlock.length, subBlock.length);
     for (let j = 0; j < subBlock.length; j++) {
       const resXOR = operatorXOR(subDecryptedBlock[j], subBlock[j]);
       iv = iv.slice(8);

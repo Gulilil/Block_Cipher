@@ -57,10 +57,6 @@ export const encrypt = (text: string, key: string, mode: string) => {
   // Since key will only be 1 block, only use the first element
   var keyBlock = makeStringToBlocksArray(key, true)[0];
 
-  textBlocks.forEach((block) => {
-    console.log(block);
-  });
-
   switch (mode) {
     case "ECB":
       textBlocks = encryptECB(textBlocks, keyBlock);

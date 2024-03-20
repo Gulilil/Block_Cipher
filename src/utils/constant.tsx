@@ -2,7 +2,7 @@ export const BLOCK_SIZE = 16; // 128 bits = 16 bytes
 export const KEY_BLOCK_SIZE = 16; // 128 bits = 16 bytes
 //export const KEY_BLOCK_SIZE = 32; // 256 bits = 32 bytes
 export const BYTE_SIZE = 8; // 1 byte = 8 bit
-export const MAX_IRETATION = 16;
+export const MAX_ITERATION = 16;
 
 export const S_BOX = [
   228, 6, 79, 206, 117, 185, 242, 167, 9, 30, 180, 222, 230, 217, 136, 68, 199,

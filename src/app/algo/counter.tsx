@@ -21,7 +21,6 @@ export const encryptCounter = (arrBlocks: Array<string>, key: string) => {
     res.push(resBlock);
     count++;
   }
-  console.log("ini res : ", res);
   return res;
 };
 

@@ -1,11 +1,11 @@
-import { S_BOX } from "@/utils/constant";
+import { S_BOX, MAX_ITERATION } from "@/utils/constant";
 import { operatorXOR, shiftLeft, splitBlock } from "@/utils/utils";
-const ROUND = 16;
+
 export const e_function = (input: string, key: string) => {
-  const internalKeys = generateInternalKey(key, ROUND);
+  const internalKeys = generateInternalKey(key, MAX_ITERATION);
   let leftSide = input.substring(0, input.length / 2);
   let rightSide = input.substring(input.length / 2, input.length);
-  for (let i = 0; i < ROUND; i++) {
+  for (let i = 0; i < MAX_ITERATION; i++) {
     const prevRightSide = rightSide;
     const prevLeftSide = leftSide;
     let internalKey = internalKeys[i].substring(0, rightSide.length);
@@ -24,10 +24,10 @@ export const e_function = (input: string, key: string) => {
 };
 
 export const d_function = (input: string, key: string) => {
-  const internalKeys = generateInternalKey(key, ROUND);
+  const internalKeys = generateInternalKey(key, MAX_ITERATION);
   let leftSide = input.substring(0, input.length / 2);
   let rightSide = input.substring(input.length / 2);
-  for (let i = ROUND - 1; i >= 0; i--) {
+  for (let i = MAX_ITERATION - 1; i >= 0; i--) {
     const prevRightSide = rightSide;
     const prevLeftSide = leftSide;
     let internalKey = internalKeys[i].substring(0, rightSide.length);
