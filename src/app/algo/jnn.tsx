@@ -1,15 +1,16 @@
-import { S_BOX } from "@/utils/constant";
-import { operatorXOR, shiftLeft, splitBlock } from "@/utils/utils";
+import { S_BOX } from "../utils/constant";
+import { operatorXOR, splitBlock } from "../utils/utils";
 
 export class JNN {
-  private round: number = 16;
+  private MAX_ITERATION: number = 16;
   encrypt = (input: string, key: string) => {
-    const internalKeys = this.generateInternalKey(key, ROUND);
+    const internalKeys = this.generateInternalKey(key, this.MAX_ITERATION);
     let leftSide = input.substring(0, input.length / 2);
     let rightSide = input.substring(input.length / 2, input.length);
-    for (let i = 0; i < this.round; i++) {
-      const prevRightSide = rightSide;
-      const prevLeftSide = leftSide;
+    for (let i = 0; i < this.MAX_ITERATION; i++) {
+      let prevRightSide = rightSide;
+      let prevLeftSide = leftSide;
+
       let internalKey = internalKeys[i].substring(0, rightSide.length);
       if (i == 2 || i == 4 || i == 9 || i == 12) {
         internalKey = internalKeys[i].substring(
@@ -17,24 +18,26 @@ export class JNN {
           internalKeys[i].length
         );
       }
-      let substitutedPlainText = this.substitutePlainText(
-        shiftLeft(prevRightSide, 3)
+
+      let tempRightSide = this.substitutePlainText(
+        this.leftShift(prevRightSide, 3)
       );
-      let result = operatorXOR(internalKey, substitutedPlainText);
+      let resultRightSide = operatorXOR(internalKey, tempRightSide);
+
       leftSide = prevRightSide;
-      rightSide = operatorXOR(result, prevLeftSide);
+      rightSide = operatorXOR(resultRightSide, prevLeftSide);
     }
     return leftSide + rightSide;
   };
 
   decrypt = (input: string, key: string) => {
-    const internalKeys = this.generateInternalKey(key, ROUND);
-    console.log("Decrypt internal keys :", internalKeys);
+    const internalKeys = this.generateInternalKey(key, this.MAX_ITERATION);
     let leftSide = input.substring(0, input.length / 2);
     let rightSide = input.substring(input.length / 2);
-    for (let i = this.round - 1; i >= 0; i--) {
-      const prevRightSide = rightSide;
-      const prevLeftSide = leftSide;
+    for (let i = this.MAX_ITERATION - 1; i >= 0; i--) {
+      let prevRightSide = rightSide;
+      let prevLeftSide = leftSide;
+
       let internalKey = internalKeys[i].substring(0, rightSide.length);
       if (i == 2 || i == 4 || i == 9 || i == 12) {
         internalKey = internalKeys[i].substring(
@@ -42,12 +45,14 @@ export class JNN {
           internalKeys[i].length
         );
       }
-      let substitutedPlainText = this.substituteCipherText(
-        this.rightShift(prevRightSide, 3)
+
+      let tempLeftSide = this.substitutePlainText(
+        this.leftShift(prevLeftSide, 3)
       );
-      let result = operatorXOR(internalKey, substitutedPlainText);
+      let resultLeftSide = operatorXOR(internalKey, tempLeftSide);
+
+      leftSide = operatorXOR(resultLeftSide, prevRightSide);
       rightSide = prevLeftSide;
-      leftSide = operatorXOR(result, prevRightSide);
     }
     return leftSide + rightSide;
   };
@@ -122,4 +127,3 @@ export class JNN {
     return result;
   };
 }
-const ROUND = 16;
