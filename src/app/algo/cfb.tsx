@@ -51,7 +51,7 @@ export const decryptCFB = (arrBlocks: Array<string>, key: string) => {
     // console.log(decryptedBlock.length, subBlock.length);
     for (let j = 0; j < subBlock.length; j++) {
       const resXOR = operatorXOR(subDecryptedBlock[j], subBlock[j]);
-      iv = iv.slice(8);
+      iv = iv.slice(j);
       iv += subBlock[j];
       temp += resXOR;
     }
