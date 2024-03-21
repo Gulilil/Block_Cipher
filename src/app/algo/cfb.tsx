@@ -25,7 +25,7 @@ export const encryptCFB = (arrBlocks: Array<string>, key: string) => {
     for (let j = 0; j < subPlainBlock.length; j++) {
       const resXOR = operatorXOR(subEncryptedBlock[j], subPlainBlock[j]);
       // Hapus 8 bit pertama dari iv(ikutin size 5)
-      iv = iv.slice(8);
+      iv = iv.slice(j);
       // Tambahin resXOR di digit paling akhir
       iv += resXOR;
       temp += resXOR;
