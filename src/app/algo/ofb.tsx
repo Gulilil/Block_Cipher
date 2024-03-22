@@ -14,7 +14,7 @@ export const encryptOFB = (arrBlocks: Array<string>, key: string) => {
     let temp = "";
     for (let j = 0; j < subPlainTextBlock.length; j++) {
       const resXOR = operatorXOR(subEncryptedBlock[j], subPlainTextBlock[j]);
-      iv = iv.slice(j);
+      iv = iv.slice(1);
       iv += subEncryptedBlock[j];
       temp += resXOR;
     }
@@ -38,7 +38,7 @@ export const decryptOFB = (arrBlocks: Array<string>, key: string) => {
     let temp = "";
     for (let j = 0; j < subCipherTextBlock.length; j++) {
       const resXOR = operatorXOR(subCipherTextBlock[j], subDecryptedBlock[j]);
-      iv = iv.slice(j);
+      iv = iv.slice(1);
       iv += subDecryptedBlock[j];
       temp += resXOR;
     }

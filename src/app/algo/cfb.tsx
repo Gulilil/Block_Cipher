@@ -25,7 +25,7 @@ export const encryptCFB = (arrBlocks: Array<string>, key: string) => {
     for (let j = 0; j < subPlainBlock.length; j++) {
       const resXOR = operatorXOR(subEncryptedBlock[j], subPlainBlock[j]);
       // Hapus 8 bit pertama dari iv(ikutin size 5)
-      iv = iv.slice(j);
+      iv = iv.slice(1);
       // Tambahin resXOR di digit paling akhir
       iv += resXOR;
       temp += resXOR;
@@ -51,7 +51,7 @@ export const decryptCFB = (arrBlocks: Array<string>, key: string) => {
     // console.log(decryptedBlock.length, subBlock.length);
     for (let j = 0; j < subBlock.length; j++) {
       const resXOR = operatorXOR(subDecryptedBlock[j], subBlock[j]);
-      iv = iv.slice(j);
+      iv = iv.slice(1);
       iv += subBlock[j];
       temp += resXOR;
     }
